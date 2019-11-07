@@ -2,10 +2,12 @@
 
 one:
   name: MyString
+  major_class: MyString
   definition: MyString
   points: 1
 
 two:
   name: MyString
+  major_class: MyString
   definition: MyString
   points: 1

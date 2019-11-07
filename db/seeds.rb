@@ -1,3 +1,10 @@
+# This file should contain all the record creation needed to seed the database with its default values.
+# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
+#
+# Examples:
+#
+#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
+#   Character.create(name: 'Luke', movie: movies.first)
 require 'benchmark'
 require 'csv'
 require 'byebug'
@@ -52,37 +59,6 @@ def points(word)
   end
 end
 
-# def intl_format(entry)
-#   word_points = points(entry[0])
-#   Word.create(
-#     name: entry[0].downcase,
-#     major_class: entry[1],
-#     definition: entry[2].downcase,
-#     points: word_points
-#   )
-# end
-
-# def intl_points(entry)
-#   word_points = points(entry[0])
-#   Word.create(
-#     name: entry[0],
-#     major_class: entry[1],
-#     definition: entry[2],
-#     points: word_points
-#   )
-# end
-
-# def intl(entry)
-#   Word.create(
-#     name: entry[0],
-#     major_class: entry[1],
-#     definition: entry[2],
-#     points: 0
-#   )
-# end
-
-# byebug
-
 csv.each do |entry|
   word_points = points(entry[0])
   Word.create(
@@ -92,5 +68,3 @@ csv.each do |entry|
     points: word_points
   )
 end
-
-# puts "Seeded database!"
