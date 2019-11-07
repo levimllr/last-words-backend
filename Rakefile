@@ -4,3 +4,8 @@
 require_relative 'config/application'
 
 Rails.application.load_tasks
+
+desc "Drops and create a database file, migrates tables, seeds database."
+task :db_start_over do
+  # Your code goes here
+end
