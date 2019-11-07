@@ -1,3 +1,4 @@
+require 'benchmark'
 require 'csv'
 require 'byebug'
 
@@ -8,8 +9,6 @@ require 'byebug'
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-
-
 
 csv = CSV.read('./db/dictionary.csv')
 
@@ -41,10 +40,7 @@ def points(word)
     "w" => 4,
     "x" => 8,
     "y" => 4,
-    "z" => 10,
-    " " => 0,
-    "-" => 0,
-    "'" => 0
+    "z" => 10
   }
   characters = word.downcase.split("")
   characters.reduce(0) do |sum, char|
@@ -56,16 +52,45 @@ def points(word)
   end
 end
 
+# def intl_format(entry)
+#   word_points = points(entry[0])
+#   Word.create(
+#     name: entry[0].downcase,
+#     major_class: entry[1],
+#     definition: entry[2].downcase,
+#     points: word_points
+#   )
+# end
+
+# def intl_points(entry)
+#   word_points = points(entry[0])
+#   Word.create(
+#     name: entry[0],
+#     major_class: entry[1],
+#     definition: entry[2],
+#     points: word_points
+#   )
+# end
+
+# def intl(entry)
+#   Word.create(
+#     name: entry[0],
+#     major_class: entry[1],
+#     definition: entry[2],
+#     points: 0
+#   )
+# end
+
 # byebug
 
 csv.each do |entry|
   word_points = points(entry[0])
   Word.create(
-    name: entry[0],
+    name: entry[0].downcase,
     major_class: entry[1],
-    definition: entry[2],
+    definition: entry[2].downcase,
     points: word_points
   )
 end
 
-puts "Seeded database!"
+# puts "Seeded database!"
