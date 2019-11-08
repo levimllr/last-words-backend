@@ -7,5 +7,5 @@ class GameWordsController < ApplicationController
 
   def game_words_params
     params.require(:game_words).permit(:game_id, :word_id, :misses, :win)
-  end 
+  end
 end

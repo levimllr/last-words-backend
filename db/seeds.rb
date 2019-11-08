@@ -73,6 +73,7 @@ require 'byebug'
 
 # create new games, and simulate a game
 alphabet = Array('a'..'z')
+guess_type = ["cheat", "lucky guess", "blind guess"]
 10.times do
   new_game = Game.create(username: Faker::Internet.username)
   lost = false
@@ -87,7 +88,12 @@ alphabet = Array('a'..'z')
     hits = []
 
     until misses.length == 5 || hits.length == unique_word_characters.length
-      letter = alphabet.sample
+      if guess_type.sample == "blind guess"
+        letter = alphabet.sample
+      else
+        letter = unique_word_characters.sample
+      end
+      
       if unique_word_characters.include?(letter)
         hits << letter
       else
