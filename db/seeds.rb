@@ -17,54 +17,95 @@ require 'byebug'
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-csv = CSV.read('./db/dictionary.csv')
+# reads dictionary.csv file and saves it as an array of arrays
+# csv = CSV.read('./db/dictionary.csv')
 
-# returns point value of word based on scrabble letter values
-def points(word)
-  scrabble_points = {
-    "a" => 1,
-    "b" => 3,
-    "c" => 3,
-    "d" => 2,
-    "e" => 1,
-    "f" => 4,
-    "g" => 2,
-    "h" => 4,
-    "i" => 1,
-    "j" => 8,
-    "k" => 5,
-    "l" => 1,
-    "m" => 3,
-    "n" => 1,
-    "o" => 1,
-    "p" => 3,
-    "q" => 10,
-    "r" => 1,
-    "s" => 1,
-    "t" => 1,
-    "u" => 1,
-    "v" => 4,
-    "w" => 4,
-    "x" => 8,
-    "y" => 4,
-    "z" => 10
-  }
-  characters = word.downcase.split("")
-  characters.reduce(0) do |sum, char|
-    if scrabble_points[char]
-      sum + scrabble_points[char]
-    else
-      sum
+# # returns point value of word based on scrabble letter values
+# def points(word)
+#   scrabble_points = {
+#     "a" => 1,
+#     "b" => 3,
+#     "c" => 3,
+#     "d" => 2,
+#     "e" => 1,
+#     "f" => 4,
+#     "g" => 2,
+#     "h" => 4,
+#     "i" => 1,
+#     "j" => 8,
+#     "k" => 5,
+#     "l" => 1,
+#     "m" => 3,
+#     "n" => 1,
+#     "o" => 1,
+#     "p" => 3,
+#     "q" => 10,
+#     "r" => 1,
+#     "s" => 1,
+#     "t" => 1,
+#     "u" => 1,
+#     "v" => 4,
+#     "w" => 4,
+#     "x" => 8,
+#     "y" => 4,
+#     "z" => 10
+#   }
+#   characters = word.downcase.split("")
+#   characters.reduce(0) do |sum, char|
+#     if scrabble_points[char]
+#       sum + scrabble_points[char]
+#     else
+#       sum
+#     end
+#   end
+# end
+
+# inserts a new word for each entry of the csv file
+# csv.each do |entry|
+#   word_points = points(entry[0])
+#   Word.create(
+#     name: entry[0].downcase,
+#     major_class: entry[1],
+#     definition: entry[2].downcase,
+#     points: word_points
+#   )
+# end
+
+# create new games, and simulate a game
+alphabet = Array('a'..'z')
+10.times do
+  new_game = Game.create(username: Faker::Internet.username)
+  lost = false
+
+  while lost == false
+    new_word = Word.all.sample
+    game_word = GameWord.new()
+    game_word.game = new_game
+    game_word.word = new_word
+    unique_word_characters = game_word.word.name.split("").uniq
+    misses = []
+    hits = []
+
+    until misses.length == 5 || hits.length == unique_word_characters.length
+      letter = alphabet.sample
+      if unique_word_characters.include?(letter)
+        hits << letter
+      else
+        misses << letter
+      end
     end
-  end
-end
 
-csv.each do |entry|
-  word_points = points(entry[0])
-  Word.create(
-    name: entry[0].downcase,
-    major_class: entry[1],
-    definition: entry[2].downcase,
-    points: word_points
-  )
+    if misses.length == 5
+      lost = true
+      game_word.win = false
+    else
+      score = (new_word.points + new_word.name.length) - (2 * misses.length)
+      new_total_score = new_game.total_score + score
+      new_game.update(total_score: new_total_score)
+      game_word.win = true
+    end
+
+    game_word.misses = misses.join("")
+    game_word.save
+  end
 end
