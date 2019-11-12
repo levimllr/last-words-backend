@@ -1,6 +1,7 @@
 class GamesController < ApplicationController
   def create
-    Game.create(username: params[:username])
+    new_game = Game.create(username: params[:username])
+    render(json: new_game)
   end
 
   def update
