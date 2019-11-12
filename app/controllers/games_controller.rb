@@ -6,7 +6,8 @@ class GamesController < ApplicationController
 
   def update
     current_game = Game.find(params[:id])
-    current_game.update(total_score: params[:total_score])
+    current_game.update(total_score: params["game"][:total_score])
+    render(json: current_game)
   end
 
   def high_scores
