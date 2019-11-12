@@ -73,9 +73,16 @@ require 'byebug'
 
 # create new games, and simulate a game
 alphabet = Array('a'..'z')
+alphabet_capitalized = Array('A'..'Z')
 guess_type = ["cheat", "lucky guess", "blind guess"]
 10.times do
-  new_game = Game.create(username: Faker::Internet.username)
+  game_name_array = []
+  3.times do
+    game_name_array << alphabet_capitalized.sample
+  end
+  game_name = game_name_array.join("")
+
+  new_game = Game.create(username: game_name)
   lost = false
 
   while lost == false
