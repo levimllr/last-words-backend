@@ -106,6 +106,7 @@ guess_type = ["cheat", "lucky guess", "blind guess"]
       game_word.win = false
     else
       score = (new_word.points + new_word.name.length) - (2 * misses.length)
+      game_word.score = score
       new_total_score = new_game.total_score + score
       new_game.update(total_score: new_total_score)
       game_word.win = true

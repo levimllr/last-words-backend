@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2019_11_08_012246) do
     t.integer "game_id"
     t.integer "word_id"
     t.string "misses"
+    t.integer "score"
     t.boolean "win"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

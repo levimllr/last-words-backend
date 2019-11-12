@@ -4,6 +4,7 @@ class CreateGameWords < ActiveRecord::Migration[6.0]
       t.integer :game_id
       t.integer :word_id
       t.string :misses
+      t.integer :score
       t.boolean :win
 
       t.timestamps
