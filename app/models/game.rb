@@ -4,6 +4,6 @@ class Game < ApplicationRecord
 
   # returns the games with top 10 highest scores
   def self.high_scores
-    self.order(total_score: :desc).first(10)
+    self.order(total_score: :desc).first(7)
   end
 end
