@@ -18,47 +18,47 @@ require 'byebug'
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # reads dictionary.csv file and saves it as an array of arrays
-# csv = CSV.read('./db/dictionary.csv')
+csv = CSV.read('./db/dictionary.csv')
 
-# # returns point value of word based on scrabble letter values
-# def points(word)
-#   scrabble_points = {
-#     "a" => 1,
-#     "b" => 3,
-#     "c" => 3,
-#     "d" => 2,
-#     "e" => 1,
-#     "f" => 4,
-#     "g" => 2,
-#     "h" => 4,
-#     "i" => 1,
-#     "j" => 8,
-#     "k" => 5,
-#     "l" => 1,
-#     "m" => 3,
-#     "n" => 1,
-#     "o" => 1,
-#     "p" => 3,
-#     "q" => 10,
-#     "r" => 1,
-#     "s" => 1,
-#     "t" => 1,
-#     "u" => 1,
-#     "v" => 4,
-#     "w" => 4,
-#     "x" => 8,
-#     "y" => 4,
-#     "z" => 10
-#   }
-#   characters = word.downcase.split("")
-#   characters.reduce(0) do |sum, char|
-#     if scrabble_points[char]
-#       sum + scrabble_points[char]
-#     else
-#       sum
-#     end
-#   end
-# end
+# returns point value of word based on scrabble letter values
+def points(word)
+  scrabble_points = {
+    "a" => 1,
+    "b" => 3,
+    "c" => 3,
+    "d" => 2,
+    "e" => 1,
+    "f" => 4,
+    "g" => 2,
+    "h" => 4,
+    "i" => 1,
+    "j" => 8,
+    "k" => 5,
+    "l" => 1,
+    "m" => 3,
+    "n" => 1,
+    "o" => 1,
+    "p" => 3,
+    "q" => 10,
+    "r" => 1,
+    "s" => 1,
+    "t" => 1,
+    "u" => 1,
+    "v" => 4,
+    "w" => 4,
+    "x" => 8,
+    "y" => 4,
+    "z" => 10
+  }
+  characters = word.downcase.split("")
+  characters.reduce(0) do |sum, char|
+    if scrabble_points[char]
+      sum + scrabble_points[char]
+    else
+      sum
+    end
+  end
+end
 
 # inserts a new word for each entry of the csv file
 # csv.each do |entry|
@@ -74,7 +74,7 @@ require 'byebug'
 # create new games, and simulate a game
 alphabet = Array('a'..'z')
 alphabet_capitalized = Array('A'..'Z')
-guess_type = ["cheat", "lucky guess", "blind guess"]
+guess_type = ["cheat", "lucky guess", "blind guess", "just wrong"]
 10.times do
   game_name_array = []
   3.times do
@@ -95,7 +95,7 @@ guess_type = ["cheat", "lucky guess", "blind guess"]
     hits = []
 
     until misses.length == 5 || hits.length == unique_word_characters.length
-      if guess_type.sample == "blind guess"
+      if guess_type.sample == "blind guess" || guess_type.sample == "just wrong"
         letter = alphabet.sample
       else
         letter = unique_word_characters.sample
