@@ -61,15 +61,15 @@ def points(word)
 end
 
 # inserts a new word for each entry of the csv file
-# csv.each do |entry|
-#   word_points = points(entry[0])
-#   Word.create(
-#     name: entry[0].downcase,
-#     major_class: entry[1],
-#     definition: entry[2].downcase,
-#     points: word_points
-#   )
-# end
+csv.each do |entry|
+  word_points = points(entry[0])
+  Word.create(
+    name: entry[0].downcase,
+    major_class: entry[1],
+    definition: entry[2].downcase,
+    points: word_points
+  )
+end
 
 # create new games, and simulate a game
 alphabet = Array('a'..'z')
