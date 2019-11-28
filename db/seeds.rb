@@ -60,14 +60,24 @@ def points(word)
   end
 end
 
+def definition_filter(defn)
+  if defn.include?("; as")
+    return defn.split("; as").first
+  else
+    return defn
+  end
+end
+
 # inserts a new word for each entry of the csv file
 csv.each do |entry|
-  word_points = points(entry[0])
+  word_pts = points(entry[0])
+  defn = definition_filter(entry[2].downcase)
+  next if entry[1].include?("p.") && entry[1] != "prep."
   Word.create(
     name: entry[0].downcase,
     major_class: entry[1],
-    definition: entry[2].downcase,
-    points: word_points
+    definition: defn,
+    points: word_pts
   )
 end
 
