@@ -69,16 +69,50 @@ def definition_filter(defn)
 end
 
 # inserts a new word for each entry of the csv file
+last_word = ""
 csv.each do |entry|
-  word_pts = points(entry[0])
+  word_name = entry[0].downcase
+  word_pts = points(word_name)
   defn = definition_filter(entry[2].downcase)
+  defn_array = defn.split(",").join("").split(".").join("").split(";").join("").split(" ")
+
+  # no words with too short of definitions
+  next if defn_array.length <= 3
+
+  # no words of the plural, preterite, interjection, superlative, prefix, or adverb classes
   next if entry[1].include?("p.") && entry[1] != "prep."
-  Word.create(
-    name: entry[0].downcase,
-    major_class: entry[1],
-    definition: defn,
-    points: word_pts
-  )
+  next if entry[1] == ""
+  next if entry[1].include?("pl.")
+  next if entry[1].include?("interj.")
+  next if entry[1].include?("superl.")
+  next if entry[1].include?("prefix.")
+  next if entry[1].include?("adv.")
+
+  # no words with definitions that include or start with the following
+  next if defn.include?("alt.")
+  next if defn.include?("genus")
+  next if defn.include?("species")
+  next if defn.include?("pertaining to")
+  next if defn.include?("the quality of")
+  next if defn_array[0] == "see"
+  next if defn_array[0] == "same as"
+
+  # no words that can be found in their definition
+  next if defn_array.select { |defn_word| word_name.include?(defn_word) || defn_word.include?(word_name) } != []
+
+  # no words that contain punctuation or space
+  next if word_name.include?(" ")
+  next if word_name.include?("'")
+  next if word_name.include?("-")
+
+  # update word with expanded definition if it already exists, otherwise create
+  if last_word == entry[0]
+    Word.last.update(definition: Word.last.definition + " " + entry[2].downcase)
+  else
+    Word.create(name: word_name, major_class: entry[1], definition: defn, points: word_pts)
+  end
+
+  last_word = entry[0]
 end
 
 # create new games, and simulate a game
