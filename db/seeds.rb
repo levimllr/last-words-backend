@@ -76,8 +76,11 @@ csv.each do |entry|
   defn = definition_filter(entry[2].downcase)
   defn_array = defn.split(",").join("").split(".").join("").split(";").join("").split(" ")
 
+  # words that are too short
+  next if word_name.length < 4
+
   # no words with too short of definitions
-  next if defn_array.length <= 3
+  next if defn_array.length < 4
 
   # no words of the plural, preterite, interjection, superlative, prefix, or adverb classes
   next if entry[1].include?("p.") && entry[1] != "prep."
