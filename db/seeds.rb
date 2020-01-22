@@ -92,6 +92,7 @@ csv.each do |entry|
   next if entry[1].include?("adv.")
 
   # no words with definitions that include or start with the following
+  next if defn.include?("one who")
   next if defn.include?("alt.")
   next if defn.include?("genus")
   next if defn.include?("species")
